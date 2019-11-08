@@ -5,8 +5,8 @@ import {Vector2} from '../model/Vector2';
 
 @Component({
   selector: 'app-controllable-sprite',
-  templateUrl: './controllable-sprite.component.html',
-  styleUrls: ['./controllable-sprite.component.scss']
+  templateUrl: '../sprite/sprite.component.html',
+  styleUrls: ['../sprite/sprite.component.scss']
 })
 export class ControllableSpriteComponent extends SpriteComponent implements OnInit {
 
