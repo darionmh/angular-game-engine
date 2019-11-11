@@ -1,9 +1,9 @@
 import {Vector2} from './Vector2';
 
 export class Bounds {
-  private readonly position: Vector2;
-  private readonly height: number;
-  private readonly width: number;
+  public position: Vector2;
+  public height: number;
+  public width: number;
 
   constructor(position: Vector2, height: number, width: number) {
     this.position = position;

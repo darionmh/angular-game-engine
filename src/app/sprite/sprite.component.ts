@@ -27,10 +27,12 @@ export class SpriteComponent implements OnInit {
     this.adjustPosition = this.adjustPosition.bind(this);
     this.getBounds = this.getBounds.bind(this);
     this.getPosition = this.getPosition.bind(this);
+    this.getCorners = this.getCorners.bind(this);
+    this.getCenter = this.getCenter.bind(this);
   }
 
   ngOnInit() {
-    this.position = new Vector2(0, 0);
+    this.position = new Vector2(this.offsetX, this.offsetY);
     this.draw();
   }
 
@@ -38,12 +40,12 @@ export class SpriteComponent implements OnInit {
     console.log(this);
     this.styleHeight = `${this.height}px`;
     this.styleWidth = `${this.width}px`;
-    this.styleTop = `${this.position.y + this.offsetX}px`;
-    this.styleLeft = `${this.position.x + this.offsetY}px`;
+    this.styleTop = `${this.position.y}px`;
+    this.styleLeft = `${this.position.x}px`;
   }
 
   public adjustPosition(changeVector2: Vector2): void {
-    this.position.addVector2(changeVector2);
+    this.position.adjust(changeVector2);
     this.draw();
   }
 
@@ -53,5 +55,19 @@ export class SpriteComponent implements OnInit {
 
   public getPosition(): Vector2 {
     return this.position;
+  }
+
+  public getCorners(): Vector2[] {
+    const corners = [];
+    corners.push(this.position);
+    corners.push(this.position.addVector2(new Vector2(this.width, 0)));
+    corners.push(this.position.addVector2(new Vector2(0, this.height)));
+    corners.push(this.position.addVector2(new Vector2(this.width, this.height)));
+
+    return corners;
+  }
+
+  public getCenter(): Vector2 {
+    return this.position.addVector2(new Vector2(this.width / 2, this.height / 2));
   }
 }

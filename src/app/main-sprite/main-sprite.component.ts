@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ControllableSpriteComponent} from '../controllable-sprite/controllable-sprite.component';
 import {CollisionService} from '../collision.service';
-import {OnCollide, Tags} from '../collidable/collidable.interface';
+import {OnCollide, Tags} from '../collidable/on-collide.interface';
+import {Vector2} from '../model/Vector2';
 
 @Component({
   selector: 'app-main-sprite',
@@ -16,6 +17,7 @@ export class MainSpriteComponent extends ControllableSpriteComponent implements 
   constructor(protected collisionService: CollisionService) {
     super();
     this.onMove = this.onMove.bind(this);
+    this.speed = 2;
   }
 
   private deregister: () => void;
@@ -33,6 +35,16 @@ export class MainSpriteComponent extends ControllableSpriteComponent implements 
 
   onMove() {
     super.onMove();
-    this.collisionService.checkForCollision(this);
+  }
+
+  shouldMove(directionVector: Vector2): boolean {
+    const collisionEvent = this.collisionService.checkForCollision(this);
+    if (!collisionEvent) {
+      return true;
+    } else {
+      const vector2 = directionVector.adjustToBound(collisionEvent.collisionVector.multiplyVector(this.speed));
+      console.log(directionVector, collisionEvent.collisionVector, vector2.nonZero());
+      return vector2.nonZero();
+    }
   }
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {OnCollide, Tags} from '../collidable/collidable.interface';
+import {OnCollide, Tags} from '../collidable/on-collide.interface';
 import {CollisionService} from '../collision.service';
 import {SpriteComponent} from '../sprite/sprite.component';
 
