@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "game-engine": {
+    "engine": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/game-engine",
+            "outputPath": "dist/engine",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "game-engine:build"
+            "browserTarget": "engine:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "game-engine:build:production"
+              "browserTarget": "engine:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "game-engine:build"
+            "browserTarget": "engine:build"
           }
         },
         "test": {
@@ -115,15 +115,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "game-engine:serve"
+            "devServerTarget": "engine:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "game-engine:serve:production"
+              "devServerTarget": "engine:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "game-engine"
+  "defaultProject": "engine"
 }

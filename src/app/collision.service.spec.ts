@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { KeyboardService } from './keyboard.service';
+import { CollisionService } from './collision.service';
 
-describe('KeyboardService', () => {
+describe('CollisionService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: KeyboardService = TestBed.get(KeyboardService);
+    const service: CollisionService = TestBed.get(CollisionService);
     expect(service).toBeTruthy();
   });
 });
