@@ -24,11 +24,11 @@ export class Vector2 {
     let x = this.x;
     let y = this.y;
     if (x !== 0) {
-      x -= other.x;
+      x += other.x;
     }
 
     if (y !== 0) {
-      y -= other.y;
+      y += other.y;
     }
 
     return new Vector2(x, y);

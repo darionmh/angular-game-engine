@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {OnCollide} from './collidable/on-collide.interface';
 import {Bounds} from './model/Bounds';
 import {Vector2} from './model/Vector2';
+import {Edge} from './model/Edge';
 
 @Injectable({
   providedIn: 'root'
@@ -25,26 +26,52 @@ export class CollisionService {
       const otherCorners = other.getCorners();
       const currCorners = collidable.getCorners();
 
-      for (let i = 0; i < 4; i++) {
-        let collisionPoint: Vector2;
-
-        if (bounds.containsPoint(otherCorners[i])) {
-          collisionPoint = otherCorners[i];
-        } else if (other.getBounds().containsPoint(currCorners[i])) {
-          collisionPoint = currCorners[i];
-        }
-
-        if (collisionPoint) {
-          collidable.onCollide(other.tag);
-          other.onCollide(collidable.tag);
-          const collisionVector = other.getCenter().subtractVector2(collidable.getCenter());
-          return {
-            collidedWith: other,
-            collisionVector: this.minimizeVector(collisionVector),
-            collisionAngle: collisionVector.toAngle()
-          };
+      const collisionPoints: Vector2[] = [];
+      let fromCollidable = false;
+      for (let i = 0; i < 4 && collisionPoints.length < 2; i++) {
+        if (other.getBounds().containsPoint(currCorners[i])) {
+          collisionPoints.push(currCorners[i]);
+          if (collisionPoints.length >= 2) {
+            fromCollidable = true;
+          }
         }
       }
+
+
+      for (let i = 0; i < 4 && collisionPoints.length < 2; i++) {
+        if (bounds.containsPoint(otherCorners[i])) {
+          collisionPoints.push(otherCorners[i]);
+        }
+      }
+
+      if (collisionPoints.length >= 2) {
+        let collisionEdge: Edge;
+        const collisionPoint1 = collisionPoints[0];
+        const collisionPoint2 = collisionPoints[1];
+        if (collisionPoint1.x >= collisionPoint2.x * 0.9 && collisionPoint1.x <= collisionPoint2.x * 1.1) {
+          // vertical
+          if (collisionPoint1.y <= collisionPoint2.y) {
+            collisionEdge = new Edge(collisionPoint1, collisionPoint2);
+          } else {
+            collisionEdge = new Edge(collisionPoint2, collisionPoint1);
+          }
+        } else if (collisionPoint1.y >= collisionPoint2.y * 0.9 && collisionPoint1.y <= collisionPoint2.y * 1.1) {
+          // horizontal
+          if (collisionPoint1.x <= collisionPoint2.x) {
+            collisionEdge = new Edge(collisionPoint1, collisionPoint2);
+          } else {
+            collisionEdge = new Edge(collisionPoint2, collisionPoint1);
+          }
+        }
+
+        return {
+          collidedWith: other,
+          collisionEdge,
+          fromCollidable
+        };
+      }
+
+      return null;
     }
 
     return null;
@@ -72,6 +99,6 @@ export class CollisionService {
 
 export interface CollisionEvent {
   collidedWith: OnCollide;
-  collisionVector: Vector2;
-  collisionAngle: number;
+  collisionEdge: Edge;
+  fromCollidable: boolean;
 }

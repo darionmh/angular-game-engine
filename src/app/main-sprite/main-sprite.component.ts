@@ -39,11 +39,16 @@ export class MainSpriteComponent extends ControllableSpriteComponent implements 
 
   shouldMove(directionVector: Vector2): boolean {
     const collisionEvent = this.collisionService.checkForCollision(this);
-    if (!collisionEvent) {
+    if (!collisionEvent || !collisionEvent.collisionEdge) {
       return true;
     } else {
-      const vector2 = directionVector.adjustToBound(collisionEvent.collisionVector.multiplyVector(this.speed));
-      console.log(directionVector, collisionEvent.collisionVector, vector2.nonZero());
+      let vector2;
+      if (collisionEvent.fromCollidable) {
+        vector2 = directionVector.adjustToBound(collisionEvent.collisionEdge.edgeToVector2().multiplyVector(-this.speed));
+      } else {
+        vector2 = directionVector.adjustToBound(collisionEvent.collisionEdge.edgeToVector2().multiplyVector(this.speed));
+      }
+      console.log(directionVector, collisionEvent.collisionEdge.edgeToVector2().multiplyVector(this.speed), vector2.nonZero());
       return vector2.nonZero();
     }
   }
